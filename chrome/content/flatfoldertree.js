@@ -70,7 +70,7 @@ let gFlatFolderTreeMode = {
 			var children = [];
 			var child;
 
-			for each (var subFolder in fixIterator(folder.subFolders, Components.interfaces.nsIMsgFolder)) {
+			for (var subFolder of fixIterator(folder.subFolders, Components.interfaces.nsIMsgFolder)) {
                 if(subFolder.getStringProperty('FFTState') == 'Broken' && subFolder.hasSubFolders) {
                     children = children.concat(get_children(subFolder, folder, level));
                 } else if(subFolder.getStringProperty('FFTState') == 'Promoted' && subFolder.hasSubFolders) {
@@ -98,7 +98,7 @@ let gFlatFolderTreeMode = {
 			return children;
 		}
 
-		for each (account in accounts)
+		for (var account of accounts)
 		{
 			let a = new ftvItem(account.incomingServer.rootFolder);
 			a._children = get_children(a._folder, a._folder, 0);
