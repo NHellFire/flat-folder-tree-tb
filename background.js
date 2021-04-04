@@ -40,7 +40,7 @@ async function main() {
     // Update menu item states when shown
     messenger.menus.onShown.addListener(FlatFolderTree.onFolderContextPopup);
 
-	// Initialize tree view layout
+    // Initialize tree view layout
     browser.FlatFolderTreeMode.__FlatFolderTree_init();
 }
 

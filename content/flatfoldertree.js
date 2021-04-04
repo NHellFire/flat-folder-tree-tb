@@ -1,12 +1,12 @@
 var FlatFolderTree = {
-	onFolderContextPopup: async function(info, tab) {
-		var msgFolder = info.selectedFolder;
+    onFolderContextPopup: async function(info, tab) {
+        var msgFolder = info.selectedFolder;
 
-		if (!msgFolder) {
-			return;
-		}
+        if (!msgFolder) {
+            return;
+        }
 
-		// Disable breakout and promote if there's no subfolders
+        // Disable breakout and promote if there's no subfolders
         messenger.menus.update("folderPaneContext-FFT-breakout", { enabled: msgFolder.subFolders.length != 0 });
         messenger.menus.update("folderPaneContext-FFT-promote", { enabled: msgFolder.subFolders.length != 0 });
 
@@ -19,21 +19,21 @@ var FlatFolderTree = {
 
         messenger.menus.update("folderPaneContext-FFT-promote", { checked: await browser.FlatFolderTreeMode.getFolderProperty(msgFolder) == 'Promoted' });
 
-		messenger.menus.refresh();
-	},
-	onFolderBreakout: async function(info) {
-		if (info["selectedFolder"]) {
-			browser.FlatFolderTreeMode.setFolderProperty(info["selectedFolder"], await browser.FlatFolderTreeMode.getFolderProperty(info["selectedFolder"]) == "Broken" ? "false" : "Broken");
-		}
-	},
+        messenger.menus.refresh();
+    },
+    onFolderBreakout: async function(info) {
+        if (info["selectedFolder"]) {
+            browser.FlatFolderTreeMode.setFolderProperty(info["selectedFolder"], await browser.FlatFolderTreeMode.getFolderProperty(info["selectedFolder"]) == "Broken" ? "false" : "Broken");
+        }
+    },
     onFolderPromote: async function(info) {
-		if (info["selectedFolder"]) {
-			browser.FlatFolderTreeMode.setFolderProperty(info["selectedFolder"], await browser.FlatFolderTreeMode.getFolderProperty(info["selectedFolder"]) == "Promoted" ? "false" : "Promoted");
-		}
+        if (info["selectedFolder"]) {
+            browser.FlatFolderTreeMode.setFolderProperty(info["selectedFolder"], await browser.FlatFolderTreeMode.getFolderProperty(info["selectedFolder"]) == "Promoted" ? "false" : "Promoted");
+        }
     },
     onFolderRestore: function(info) {
-		if (info["selectedFolder"]) {
-			browser.FlatFolderTreeMode.setParentProperty(info["selectedFolder"], "false");
-		}
+        if (info["selectedFolder"]) {
+            browser.FlatFolderTreeMode.setParentProperty(info["selectedFolder"], "false");
+        }
     }
 };

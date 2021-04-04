@@ -53,16 +53,16 @@ var FlatFolderTreeMode = class extends ExtensionCommon.ExtensionAPI {
 
 
         generateMap: function ftv_flat_generateMap(ftv) {
-    		let accounts = gFolderTreeView._sortedAccounts();
+            let accounts = gFolderTreeView._sortedAccounts();
 
-    		let accountMap = [];
+            let accountMap = [];
 
-    		function get_children(folder, parent, level)
-    		{
-    			var children = [];
-    			var child;
+            function get_children(folder, parent, level)
+            {
+                var children = [];
+                var child;
 
-    			for (var subFolder of fixIterator(folder.subFolders, Components.interfaces.nsIMsgFolder)) {
+                for (var subFolder of fixIterator(folder.subFolders, Components.interfaces.nsIMsgFolder)) {
                  if(subFolder.getStringProperty('FFTState') == 'Broken' && subFolder.hasSubFolders) {
                      children = children.concat(get_children(subFolder, folder, level));
                     } else if(subFolder.getStringProperty('FFTState') == 'Promoted' && subFolder.hasSubFolders) {
@@ -72,42 +72,42 @@ var FlatFolderTreeMode = class extends ExtensionCommon.ExtensionAPI {
                      child._children = [];
                      children.push(child);
                      children = children.concat(get_children(subFolder, folder, level));
-    				} else {
-    					child = new ftvItem(subFolder);
-    					child._parent = parent;
-    					child._level = level + 1;
-    					children.push(child);
-    				}
-    			}
+                    } else {
+                        child = new ftvItem(subFolder);
+                        child._parent = parent;
+                        child._level = level + 1;
+                        children.push(child);
+                    }
+                }
 
-    			children.sort(function (a, b) {
-    				let sortKey = a._folder.compareSortKeys(b._folder);
-    				if (sortKey)
-    					return sortKey;
-    				return a.text.toLowerCase() > b.text.toLowerCase();
-    			});
+                children.sort(function (a, b) {
+                    let sortKey = a._folder.compareSortKeys(b._folder);
+                    if (sortKey)
+                        return sortKey;
+                    return a.text.toLowerCase() > b.text.toLowerCase();
+                });
 
-    			return children;
-    		}
+                return children;
+            }
 
-    		for (var account of accounts)
-    		{
-    			let a = new ftvItem(account.incomingServer.rootFolder);
-    			a._children = get_children(a._folder, a._folder, 0);
-    			accountMap.push(a);
-    		}
+            for (var account of accounts)
+            {
+                let a = new ftvItem(account.incomingServer.rootFolder);
+                a._children = get_children(a._folder, a._folder, 0);
+                accountMap.push(a);
+            }
 
-    		return accountMap;
-    	},
-    	getParentOfFolder: function(aFolder) {
-    		return aFolder.parent;
-    	},
-    	getFolderForMsgHdr: function IFolderTreeMode_getFolderForMsgHdr(aMsgHdr) {
-    		return aMsgHdr.folder;
-    	},
-    	onFolderAdded: function IFolderTreeMode_onFolderAdded(aParent, aFolder) {
-    		gFolderTreeView.addFolder(aParent, aFolder);
-    	},
+            return accountMap;
+        },
+        getParentOfFolder: function(aFolder) {
+            return aFolder.parent;
+        },
+        getFolderForMsgHdr: function IFolderTreeMode_getFolderForMsgHdr(aMsgHdr) {
+            return aMsgHdr.folder;
+        },
+        onFolderAdded: function IFolderTreeMode_onFolderAdded(aParent, aFolder) {
+            gFolderTreeView.addFolder(aParent, aFolder);
+        },
 
       },
     };
